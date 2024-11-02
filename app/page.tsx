@@ -4,11 +4,11 @@ import React, { useState, useEffect } from 'react';
 import DefaultLayout from '@/app/layout/DefaultLayout';
 import BookSingle from './components/BookSingle';
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
+// interface User {
+//   id: number;
+//   name: string;
+//   email: string;
+// }
 
 interface Book {
   id: string;
@@ -43,7 +43,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchBooks() {
       try {
-        const response = await fetch('/api/getBooks'); // Substitua pela sua API real
+        const response = await fetch('/api/getBooks');
         const data = await response.json();
         setBooks(data);
       } catch (error) {

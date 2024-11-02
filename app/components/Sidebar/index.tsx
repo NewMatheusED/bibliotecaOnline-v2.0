@@ -6,6 +6,7 @@ import SidebarItem from "./SidebarItem";
 import ClickOutside from "@/app/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import logoMain from "@/app/ui/images/biblioteca 2-01.png";
+import { House } from 'lucide-react';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -16,6 +17,11 @@ const menuGroups = [
   {
     name: "MENU",
     menuItems: [
+      {
+        icon: <House />,
+        label: "Home",
+        route: "/",
+      },
       {
         icon: (
           <svg
