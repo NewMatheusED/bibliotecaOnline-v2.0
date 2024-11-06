@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import DefaultLayout from '@/app/layout/DefaultLayout';
 import BookSingle from './components/BookSingle';
+import withAuth from '@/hoc/withAuth';
 
 // interface User {
 //   id: number;
@@ -24,7 +25,7 @@ interface Book {
   };
 }
 
-export default function Home() {
+function Home() {
   // const [users, setUsers] = useState<User[]>([]);
   const [books, setBooks] = useState<Book[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -71,3 +72,5 @@ export default function Home() {
     </DefaultLayout>
   );
 }
+
+export default withAuth(Home);

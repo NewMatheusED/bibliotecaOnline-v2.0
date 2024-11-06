@@ -12,5 +12,5 @@ model Users {
   email     String   @unique
   name      String?
   password  String
-  privilege String
+  role      String
 }
