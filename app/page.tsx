@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import DefaultLayout from '@/app/layout/DefaultLayout';
 import BookSingle from './components/BookSingle';
-import withAuth from '@/hoc/withAuth';
 
 // interface User {
 //   id: number;
@@ -73,4 +72,4 @@ function Home() {
   );
 }
 
-export default withAuth(Home);
+export default Home;

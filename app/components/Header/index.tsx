@@ -5,13 +5,11 @@ import DarkModeSwitcher from "./DarkModeSwitcher";
 import DropdownUser from "./DropdownUser";
 import Image from "next/image";
 import profileImage from "../../ui/images/profile.png";
-import useUser from "@/hooks/useUser";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
-  const user = useUser();
 
   return (
     <header className="sticky top-0 z-999 flex w-auto bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none transition-all">
@@ -112,18 +110,11 @@ const Header = (props: {
             <DarkModeSwitcher />
             {/* <!-- Dark Mode Toggler --> */}
           </ul>
-
-          {user ? (
             <DropdownUser
-              username={user.name}
-              privilege={user.role}
-              imageSrc={user.image || profileImage.src}
+              username='Matheus'
+              privilege='User'
+              imageSrc={profileImage.src}
             />
-          ) : (
-            <Link href="/auth/signin" className="text-sm text-primary hover:underline">
-              Sign In
-            </Link>
-          )}
           {/* <!-- User Area --> */}
         </div>
       </div>

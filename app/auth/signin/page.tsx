@@ -1,11 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
 import DefaultLayout from '@/app/layout/DefaultLayout';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
 
 export default function Signin() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -59,22 +57,6 @@ export default function Signin() {
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
 
-    const result = await signIn('credentials', {
-      redirect: false,
-      email: formData.get('email'),
-      password: formData.get('password'),
-    });
-
-    if (!result.error) {
-      // Armazenar dados do usuário em cookies
-      const user = { email: formData.get('email'), name: formData.get('name'), role: 'user' };
-      Cookies.set('user', JSON.stringify(user), { expires: 7, path: '/' });
-      router.push('/');
-    } else {
-      setFormError(result.error);
-    }
-
-    setLoadingFormSignIn(false);
   };
 
   return (

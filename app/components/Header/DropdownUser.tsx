@@ -25,7 +25,7 @@ const DropdownUser = (props: {
           alt="User Profile"
           width={40}
           height={40}
-          className="rounded-full"
+          className="rounded-full w-10 h-10"
         />
         <div className="flex flex-col">
           <span className="font-semibold">{props.username}</span>
