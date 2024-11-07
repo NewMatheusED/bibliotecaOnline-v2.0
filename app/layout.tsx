@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./satoshi.css";
+import { AuthProvider } from "@/app/context/authContext";
 
 export const metadata: Metadata = {
   title: "Biblioteca Impacta",
@@ -13,10 +14,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br">
-      <body className="m-0 p-0 box-border">
-        {children}
-      </body>
-    </html>
+    <AuthProvider>
+      <html lang="pt-br">
+        <body className="m-0 p-0 box-border">
+          {children}
+        </body>
+      </html>
+    </AuthProvider>
   );
 }

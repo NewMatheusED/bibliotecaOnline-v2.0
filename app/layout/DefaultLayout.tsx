@@ -1,5 +1,3 @@
-// components/DefaultLayout.tsx
-
 import React from 'react';
 import Sidebar from '@/app/components/Sidebar';
 import Header from '@/app/components/Header';

@@ -4,13 +4,16 @@ import { useState } from 'react';
 import DefaultLayout from '@/app/layout/DefaultLayout';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/app/context/authContext';
 
 export default function Signin() {
+  const { login } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [password, setPassword] = useState('');
   const [retypePassword, setRetypePassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [formError, setFormError] = useState('');
+  const [formErrorSignin, setFormErrorSignin] = useState('');
+  const [formErrorSignup, setFormErrorSignup] = useState('');
   const [loadingFormSignUp, setLoadingFormSignUp] = useState(false);
   const [loadingFormSignIn, setLoadingFormSignIn] = useState(false);
   const router = useRouter();
@@ -20,9 +23,10 @@ export default function Signin() {
     e.preventDefault();
     if (password !== retypePassword) {
       setPasswordError('Passwords do not match');
+      setLoadingFormSignUp(false);
     } else {
       setPasswordError('');
-      setFormError('');
+      setFormErrorSignup('');
 
       const form = e.currentTarget as HTMLFormElement;
       const formData = new FormData(form);
@@ -38,12 +42,14 @@ export default function Signin() {
 
         if (!response.ok) {
           const errorData = await response.json();
-          setFormError(errorData.error || 'Failed to register user');
+          setFormErrorSignup(errorData.error || 'Failed to register user');
         } else {
+          const userData = await response.json();
+          login(userData); // Store user data in context and localStorage
           router.push('/');
         }
       } catch (error) {
-        setFormError('An unexpected error occurred: ' + error);
+        setFormErrorSignup('An unexpected error occurred: ' + error);
       } finally {
         setLoadingFormSignUp(false);
       }
@@ -57,6 +63,28 @@ export default function Signin() {
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
 
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        body: JSON.stringify(Object.fromEntries(formData)),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setFormErrorSignin(errorData.error || 'Failed to sign in');
+      } else {
+        const userData = await response.json();
+        login(userData);
+        router.push('/');
+      }
+    } catch (error) {
+      setFormErrorSignin('An unexpected error occurred: ' + error);
+    } finally {
+      setLoadingFormSignIn(false);
+    }
   };
 
   return (
@@ -135,14 +163,35 @@ export default function Signin() {
                   </Link>
                 </div>
 
-                {formError && (
+                {formErrorSignin && (
                   <div className="mb-4.5 text-red-500">
-                    {formError}
+                    {formErrorSignin}
                   </div>
                 )}
 
                 <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
-                  Sign In
+                  {loadingFormSignIn ? (
+                    <svg
+                      className="animate-spin h-5 w-5 text-white ml-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                  ) : "Sign In"}
                 </button>
               </div>
             </form>
@@ -155,7 +204,7 @@ export default function Signin() {
                 Sign Up Form
               </h3>
             </div>
-            <form action="/api/register" method='POST' onSubmit={handleSignUpSubmit}>
+            <form onSubmit={handleSignUpSubmit}>
               <div className="p-6.5">
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -214,9 +263,9 @@ export default function Signin() {
                   </div>
                 )}
 
-                {formError && (
+                {formErrorSignup && (
                   <div className="mb-4.5 text-red-500">
-                    {formError}
+                    {formErrorSignup}
                   </div>
                 )}
 

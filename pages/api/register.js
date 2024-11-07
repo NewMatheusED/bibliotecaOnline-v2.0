@@ -1,5 +1,3 @@
-// app/api/register.js
-
 import { registerUser, analiseEmail } from '../../lib/queries';
 
 export default async function handler(req, res) {

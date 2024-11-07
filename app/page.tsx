@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import DefaultLayout from '@/app/layout/DefaultLayout';
 import BookSingle from './components/BookSingle';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // interface User {
 //   id: number;
@@ -57,18 +58,19 @@ function Home() {
   }, []);
 
   return (
-    <DefaultLayout sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} loading={loading}>
-      <div className='flex gap-4 flex-wrap'>
-        {books.map((book) => (
-          <BookSingle
-            key={book.id}
-            title={book.volumeInfo.title}
-            image={book.volumeInfo.imageLinks.thumbnail}
-            description={book.volumeInfo.description}
-          />
-        ))}
-      </div>
-    </DefaultLayout>
+    <ProtectedRoute>
+      <DefaultLayout sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} loading={loading}>
+        <div className='flex gap-4 flex-wrap'>
+          {books.map((book) => (
+            <BookSingle
+              key={book.id}
+              title={book.volumeInfo.title}
+              image={book.volumeInfo.imageLinks.thumbnail}
+            />
+          ))}
+        </div>
+      </DefaultLayout>
+    </ProtectedRoute>
   );
 }
 

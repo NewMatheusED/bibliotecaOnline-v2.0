@@ -1,15 +1,14 @@
-'use client';
-
+import { useAuth } from '@/app/context/authContext';
 import Link from "next/link";
 import DarkModeSwitcher from "./DarkModeSwitcher";
 import DropdownUser from "./DropdownUser";
-import Image from "next/image";
 import profileImage from "../../ui/images/profile.png";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
+  const { user } = useAuth();
 
   return (
     <header className="sticky top-0 z-999 flex w-auto bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none transition-all">
@@ -38,7 +37,7 @@ const Header = (props: {
                 ></span>
                 <span
                   className={`relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm bg-black delay-200 duration-200 ease-in-out dark:bg-white transition-all ${
-                    !props.sidebarOpen && "!w-full delay-500"
+                    !props.sidebarOpen && "delay-500 !w-full"
                   }`}
                 ></span>
               </span>
@@ -57,14 +56,13 @@ const Header = (props: {
             </span>
           </button>
           {/* <!-- Hamburger Toggle BTN --> */}
-
           <Link className="block flex-shrink-0 lg:hidden" href="/">
-            <Image
+            {/* <Image
               width={32}
               height={32}
               src={"../../ui/images/logo-icon.svg"}
               alt="Logo"
-            />
+            /> */}
           </Link>
         </div>
 
@@ -110,12 +108,17 @@ const Header = (props: {
             <DarkModeSwitcher />
             {/* <!-- Dark Mode Toggler --> */}
           </ul>
+          {user ? (
             <DropdownUser
-              username='Matheus'
-              privilege='User'
+              username={user.name}
+              role={user.role}
               imageSrc={profileImage.src}
             />
-          {/* <!-- User Area --> */}
+          ) : (
+            <Link href="/auth/signin" className="text-sm text-primary hover:underline">
+              Sign In
+            </Link>
+          )}
         </div>
       </div>
     </header>
