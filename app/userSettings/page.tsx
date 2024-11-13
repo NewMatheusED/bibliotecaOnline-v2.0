@@ -22,8 +22,6 @@ const UserSettings = () => {
   const handleSave = async () => {
     if (!user) return;
 
-    const updatedUser = { ...user, name, email };
-
     try {
       const response = await fetch('/api/updateUser', {
         method: 'PUT',

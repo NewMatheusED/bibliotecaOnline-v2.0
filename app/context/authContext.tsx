@@ -5,15 +5,15 @@ import { useRouter } from 'next/navigation';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
 
 interface AuthContextProps {
-  user: any;
-  login: (userData: any) => void;
+  user: { id: string; name: string; email: string, role: string } | null;
+  login: (userData: { id: string; name: string; email: string, role: string }) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<{ id: string; name: string; email: string, role: string } | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [user]);
 
-  const login = (userData: any) => {
+  const login = (userData: { id: string; name: string; email: string, role: string }) => {
     setUser(userData);
     setCookie(null, 'session', JSON.stringify(userData), {
       maxAge: 60 * 60 * 24 * 7, // 1 week
