@@ -4,12 +4,7 @@ import React, { useState, useEffect } from 'react';
 import DefaultLayout from '@/app/layout/DefaultLayout';
 import BookSingle from './components/BookSingle';
 import ProtectedRoute from './components/ProtectedRoute';
-
-// interface User {
-//   id: number;
-//   name: string;
-//   email: string;
-// }
+import defaultThumbnail from '@/app/ui/images/default_image.png';
 
 interface Book {
   id: string;
@@ -19,27 +14,17 @@ interface Book {
     publisher: string;
     publishedDate: string;
     description: string;
-    imageLinks: {
+    imageLinks?: {
       thumbnail: string;
+      smallThumbnail: string;
     };
   };
 }
 
 function Home() {
-  // const [users, setUsers] = useState<User[]>([]);
   const [books, setBooks] = useState<Book[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  // async function getUsers() {
-  //   try {
-  //     const response = await fetch('/api/getUsers');
-  //     const data = await response.json();
-  //     setUsers(data);
-  //   } catch (error) {
-  //     console.error('Erro ao buscar usuários:', error);
-  //   }
-  // }
 
   useEffect(() => {
     async function fetchBooks() {
@@ -47,6 +32,7 @@ function Home() {
         const response = await fetch('/api/getBooks');
         const data = await response.json();
         setBooks(data);
+        console.log(data);
       } catch (error) {
         console.error('Erro ao buscar livros:', error);
       } finally {
@@ -65,7 +51,7 @@ function Home() {
             <BookSingle
               key={book.id}
               title={book.volumeInfo.title}
-              image={book.volumeInfo.imageLinks.thumbnail}
+              image={book.volumeInfo.imageLinks?.smallThumbnail || defaultThumbnail.src}
             />
           ))}
         </div>
