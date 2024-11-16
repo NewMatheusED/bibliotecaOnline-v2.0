@@ -4,7 +4,8 @@ CREATE TABLE "Users" (
     "email" TEXT NOT NULL,
     "name" TEXT,
     "password" TEXT NOT NULL,
-    "privilege" TEXT NOT NULL,
+    "role" TEXT NOT NULL,
+    "profilePicture" TEXT NOT NULL DEFAULT 'default-profile.png',
 
     CONSTRAINT "Users_pkey" PRIMARY KEY ("id")
 );
