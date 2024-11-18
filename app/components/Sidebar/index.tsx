@@ -17,7 +17,7 @@ interface SidebarProps {
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
 
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   const menuGroups = [
     {

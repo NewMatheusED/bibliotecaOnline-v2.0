@@ -2,7 +2,6 @@ import { useAuth } from '@/app/context/authContext';
 import Link from "next/link";
 import DarkModeSwitcher from "./DarkModeSwitcher";
 import DropdownUser from "./DropdownUser";
-import profilePicture from "@/public/ui/imag"
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;

@@ -66,7 +66,7 @@ const UserSettings = () => {
         }
       }
     } catch (error) {
-      setError('An unexpected error occurred: ' + error.message);
+      setError('An unexpected error occurred: ' + error);
     }
   };
   
