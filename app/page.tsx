@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import DefaultLayout from '@/app/layout/DefaultLayout';
 import BookSingle from './components/BookSingle';
 import ProtectedRoute from './components/ProtectedRoute';
-import defaultThumbnail from '@/app/ui/images/default_image.png';
+import defaultThumbnail from '@/public/images/default_image.png';
 
 interface Book {
   id: string;

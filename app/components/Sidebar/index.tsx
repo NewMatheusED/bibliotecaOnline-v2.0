@@ -5,7 +5,7 @@ import Image from "next/image";
 import SidebarItem from "./SidebarItem";
 import ClickOutside from "@/app/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import logoMain from "@/app/ui/images/biblioteca 2-01.png";
+import logoMain from "@/public/images/biblioteca 2-01.png";
 import { House } from 'lucide-react';
 import { useAuth } from "@/app/context/authContext";
 
@@ -90,8 +90,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </svg>
           ),
           label: "Logout",
-          route: "#",
-          onClick: logout,
+          route: "/logout",
         } :
         {
           icon: (

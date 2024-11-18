@@ -2,7 +2,7 @@ import { useAuth } from '@/app/context/authContext';
 import Link from "next/link";
 import DarkModeSwitcher from "./DarkModeSwitcher";
 import DropdownUser from "./DropdownUser";
-import profileImage from "../../ui/images/profile.png";
+import profilePicture from "@/public/ui/imag"
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -108,17 +108,17 @@ const Header = (props: {
             <DarkModeSwitcher />
             {/* <!-- Dark Mode Toggler --> */}
           </ul>
-          {user ? (
+            {user ? (
             <DropdownUser
               username={user.name}
               role={user.role}
-              imageSrc={profileImage.src}
+              imageSrc={`/images/${user.profilePicture}`}
             />
-          ) : (
+            ) : (
             <Link href="/auth/signin" className="text-sm text-primary hover:underline">
               Sign In
             </Link>
-          )}
+            )}
         </div>
       </div>
     </header>

@@ -21,6 +21,7 @@ const DropdownUser = (props: {
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center gap-4 cursor-pointer"
       >
+        {}
         <Image
           src={props.imageSrc}
           alt="User Profile"
