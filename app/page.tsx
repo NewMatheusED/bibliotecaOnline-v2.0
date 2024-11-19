@@ -50,6 +50,7 @@ function Home() {
           {books.map((book) => (
             <BookSingle
               key={book.id}
+              id={book.id}
               title={book.volumeInfo.title}
               image={book.volumeInfo.imageLinks?.smallThumbnail || defaultThumbnail.src}
             />
