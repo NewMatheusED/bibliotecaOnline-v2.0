@@ -15,6 +15,7 @@ const UserSettings = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -41,6 +42,7 @@ const UserSettings = () => {
     formData.append('email', email);
     formData.append('profilePicture', profilePicture);
     console.log(formData);
+    setLoading(true);
 
     try {
       const response = await fetch('/api/updateUser', {
@@ -54,6 +56,7 @@ const UserSettings = () => {
           ? await response.json()
           : { error: 'Failed to update user' };
         setError(errorData.error || 'Failed to update user');
+        setLoading(false);
       } else {
         const userData = contentType && contentType.includes('application/json')
           ? await response.json()
@@ -61,12 +64,15 @@ const UserSettings = () => {
         if (userData) {
           login(userData);
           setSuccess('User updated successfully');
+          setLoading(false);
         } else {
           setError('Unexpected response format');
+          setLoading(false);
         }
       }
     } catch (error) {
       setError('An unexpected error occurred: ' + error);
+      setLoading(false);
     }
   };
   
@@ -138,7 +144,26 @@ const UserSettings = () => {
                   onClick={handleSave}
                   className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                 >
-                  Save
+                  {loading ? <svg
+                    className="animate-spin h-5 w-5 text-white ml-2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg> : 'Save'}
                 </button>
               </div>
             </div>

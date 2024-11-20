@@ -11,21 +11,33 @@ interface AuthContextProps {
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
+const SESSION_DURATION = 2 * 60 * 60 * 1000; // 2 hours
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<{ id: string; name: string; email: string, role: string, profilePicture: string } | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
-    if (storedUser) {
+    const storedTimestamp = localStorage.getItem('userTimestamp');
+    if (storedUser && storedTimestamp) {
       const userData = JSON.parse(storedUser);
-      setUser(userData);
+      const timestamp = parseInt(storedTimestamp, 10);
+      const currentTime = new Date().getTime();
+
+      if (currentTime - timestamp < SESSION_DURATION) {
+        setUser(userData);
+      } else {
+        localStorage.removeItem('user');
+        localStorage.removeItem('userTimestamp');
+      }
     }
   }, []);
 
   useEffect(() => {
     if (user) {
       localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('userTimestamp', new Date().getTime().toString());
       const lastVisitedPage = localStorage.getItem('lastVisitedPage') || '/';
       if (lastVisitedPage === '/auth/signin') {
         router.push('/');
@@ -34,17 +46,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     } else {
       localStorage.removeItem('user');
+      localStorage.removeItem('userTimestamp');
     }
   }, [user, router]);
 
   const login = (userData: { id: string; name: string; email: string, role: string, profilePicture: string }) => {
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('userTimestamp', new Date().getTime().toString());
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('userTimestamp');
     router.push('/auth/signin');
   };
 
