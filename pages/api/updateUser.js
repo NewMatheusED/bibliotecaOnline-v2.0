@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     await runMiddleware(req, res, uploadMiddleware);
 
     const { userId, name, email } = req.body;
-    let profilePictureUrl = null;
+    let profilePictureUrl = req.body.profilePicture;
 
     if (req.file) {
       const fileName = `${userId}-${Date.now()}.${mime.extension(req.file.mimetype)}`;
