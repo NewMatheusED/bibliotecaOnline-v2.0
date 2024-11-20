@@ -2,7 +2,6 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { parseCookies, setCookie, destroyCookie } from 'nookies';
 
 interface AuthContextProps {
   user: { id: string; name: string; email: string, role: string, profilePicture: string } | null;
@@ -17,33 +16,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const router = useRouter();
 
   useEffect(() => {
-    const cookies = parseCookies();
-    if (cookies.session) {
-      const userData = JSON.parse(cookies.session);
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const userData = JSON.parse(storedUser);
       setUser(userData);
-      localStorage.setItem('user', JSON.stringify(userData));
     }
   }, []);
 
   useEffect(() => {
     if (user) {
       localStorage.setItem('user', JSON.stringify(user));
+      const lastVisitedPage = localStorage.getItem('lastVisitedPage') || '/';
+      if (lastVisitedPage === '/auth/signin') {
+        router.push('/');
+      } else {
+        router.push(lastVisitedPage);
+      }
     } else {
       localStorage.removeItem('user');
     }
-  }, [user]);
+  }, [user, router]);
 
   const login = (userData: { id: string; name: string; email: string, role: string, profilePicture: string }) => {
     setUser(userData);
-    setCookie(null, 'session', JSON.stringify(userData), {
-      maxAge: 60 * 60 * 2, // 2 hours
-      path: '/',
-    });
+    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
-    destroyCookie(null, 'session');
+    localStorage.removeItem('user');
     router.push('/auth/signin');
   };
 
