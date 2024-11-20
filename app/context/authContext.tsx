@@ -36,7 +36,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = (userData: { id: string; name: string; email: string, role: string, profilePicture: string }) => {
     setUser(userData);
     setCookie(null, 'session', JSON.stringify(userData), {
-      maxAge: 60 * 60 * 24 * 7, // 1 week
+      maxAge: 60 * 60 * 2, // 2 hours
       path: '/',
     });
   };

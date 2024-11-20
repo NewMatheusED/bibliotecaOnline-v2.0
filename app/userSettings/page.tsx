@@ -112,11 +112,11 @@ const UserSettings = () => {
                   </label>
                   <div className="relative group w-25 h-25">
                     <Image
-                      src={profilePicturePreview || `/images/${user?.profilePicture}`}
+                      src={profilePicturePreview || `${user?.profilePicture}`}
                       alt="User Profile"
                       width={100}
                       height={100}
-                      className="rounded-full w-25 h-25"
+                      className="rounded-full w-25 h-25 object-cover"
                       id="profilePicturePreview"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => document.getElementById('profilePictureInput')?.click()}>

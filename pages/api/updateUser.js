@@ -1,27 +1,19 @@
 import { updateUser } from '../../lib/queries';
 import multer from 'multer';
-import path from 'path';
+import { uploadImageToStorage } from '../../lib/uploadImageToStorage';
+import mime from 'mime-types';
 
-// Configuração do Multer
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: path.join(process.cwd(), 'public/images'), // Pasta onde as imagens serão salvas
-    filename: (req, file, cb) => {
-      const uniqueName = `${Date.now()}-${file.originalname}`;
-      cb(null, uniqueName); // Define o novo nome para o arquivo
-    },
-  }),
-});
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 const uploadMiddleware = upload.single('profilePicture');
 
 export const config = {
   api: {
-    bodyParser: false, // Desativa o bodyParser para lidar com FormData
+    bodyParser: false,
   },
 };
 
-// Helper para usar middlewares em rotas Next.js
 const runMiddleware = (req, res, fn) => {
   return new Promise((resolve, reject) => {
     fn(req, res, (result) => {
@@ -40,19 +32,17 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Processa o upload com Multer
     await runMiddleware(req, res, uploadMiddleware);
 
-    // Dados do usuário
     const { userId, name, email } = req.body;
+    let profilePictureUrl = null;
 
-    // Nome do arquivo enviado
-    const profilePicture = req.file ? req.file.filename : null; // `req.file.filename` contém o novo nome gerado
+    if (req.file) {
+      const fileName = `${userId}-${Date.now()}.${mime.extension(req.file.mimetype)}`;
+      profilePictureUrl = await uploadImageToStorage(req.file.buffer, fileName);
+    }
 
-    console.log('Uploaded profilePicture:', profilePicture);
-
-    // Atualiza o usuário no banco de dados
-    const updatedUser = await updateUser(userId, name, email, profilePicture);
+    const updatedUser = await updateUser(userId, name, email, profilePictureUrl);
     res.status(200).json(updatedUser);
   } catch (error) {
     console.error('Error updating user:', error);

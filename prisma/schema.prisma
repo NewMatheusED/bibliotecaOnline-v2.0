@@ -13,5 +13,5 @@ model Users {
   name           String?
   password       String
   role           String
-  profilePicture String   @default("default-profile.png")
+  profilePicture String?   
 }
