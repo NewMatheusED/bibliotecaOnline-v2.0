@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/authContext'; 
 import Image from 'next/image';
 import { CircleMinus, RefreshCcw } from 'lucide-react';
+import Tooltip from '@/app/components/Tooltip';
 
 export default function AdminPage() {
 
@@ -85,10 +86,11 @@ export default function AdminPage() {
             <DefaultLayout sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} loading={false}>
                 <div className="title flex items-center justify-between">
                     <h1 className="text-2xl font-semibold text-black dark:text-white">Adminstração de usuários</h1>
-                    <div onClick={() => {refreshUsers()}} className="reloadusers flex gap-3 items-center bg-white dark:bg-strokedark shadow-md rounded-lg p-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-boxdark">
-                        <RefreshCcw />
-                        <p>Refresh Users</p>
-                    </div>
+                    <Tooltip content="Reload users">
+                        <div onClick={() => { refreshUsers() }} className="reloadusers flex gap-3 items-center bg-white dark:bg-strokedark shadow-md rounded-lg p-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-boxdark">
+                            <RefreshCcw />
+                        </div>
+                    </Tooltip>
                 </div>
                 {loading ? (
                     <div className="flex justify-center items-center h-full">

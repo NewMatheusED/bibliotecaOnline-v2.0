@@ -27,6 +27,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const fetchUserData = async () => {
       try {
+        if (!user) return;
         const parsedUser = storedUser ? JSON.parse(storedUser) : null;
         const response = await fetch(`/api/getUser?id=${parsedUser?.id}`, {
           method: 'GET',
@@ -52,7 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');

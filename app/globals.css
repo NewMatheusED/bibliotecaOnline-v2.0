@@ -36,6 +36,62 @@
     }
 }
 
+/* Tooltip custom theme */
+.tippy-box[data-theme~='custom'] {
+    background-color: #333;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: normal;
+    outline: 0;
+    transition-property: transform, visibility, opacity;
+  }
+  
+  .tippy-box[data-theme~='custom'][data-placement^='top'] > .tippy-arrow {
+    bottom: 0;
+  }
+  
+  .tippy-box[data-theme~='custom'][data-placement^='top'] > .tippy-arrow:before {
+    bottom: -7px;
+    left: 0;
+    border-width: 8px 8px 0;
+    border-top-color: initial;
+    transform-origin: center top;
+  }
+  
+  .tippy-box[data-theme~='custom'][data-placement^='bottom'] > .tippy-arrow {
+    top: 0;
+  }
+  
+  .tippy-box[data-theme~='custom'][data-placement^='bottom'] > .tippy-arrow:before {
+    top: -7px;
+    left: 0;
+    border-width: 0 8px 8px;
+    border-bottom-color: initial;
+    transform-origin: center bottom;
+  }
+  
+  .tippy-box[data-theme~='custom'][data-placement^='left'] > .tippy-arrow {
+    right: 0;
+  }
+  
+  .tippy-box[data-theme~='custom'][data-placement^='left'] > .tippy-arrow:before {
+    border-width: 8px 8px 8px 0;
+    border-left-color: initial;
+    transform-origin: center left;
+  }
+  
+  .tippy-box[data-theme~='custom'][data-placement^='right'] > .tippy-arrow {
+    left: 0;
+  }
+  
+  .tippy-box[data-theme~='custom'][data-placement^='right'] > .tippy-arrow:before {
+    border-width: 8px 0 8px 8px;
+    border-right-color: initial;
+    transform-origin: center right;
+  }
+
 /* third-party libraries CSS */
 
 .tableCheckbox:checked ~ div span {
