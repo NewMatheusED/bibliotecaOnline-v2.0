@@ -21,6 +21,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const storedUser = localStorage.getItem('user');
     const storedTimestamp = localStorage.getItem('userTimestamp');
     if (storedUser && storedTimestamp) {
+      setUser(JSON.parse(storedUser));
+    }
+
+
+    const fetchUserData = async () => {
+      try {
+        const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+        const response = await fetch(`/api/getUser?id=${parsedUser?.id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData);
+          localStorage.setItem('user', JSON.stringify(userData));
+          localStorage.setItem('userTimestamp', new Date().getTime().toString());
+        } else {
+          throw new Error('Failed to fetch user data');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    const intervalId = setInterval(() => {
+      fetchUserData();
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    const storedTimestamp = localStorage.getItem('userTimestamp');
+    if (storedUser && storedTimestamp) {
       const userData = JSON.parse(storedUser);
       const timestamp = parseInt(storedTimestamp, 10);
       const currentTime = new Date().getTime();
@@ -39,10 +76,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('userTimestamp', new Date().getTime().toString());
       const lastVisitedPage = localStorage.getItem('lastVisitedPage') || '/';
-      if (lastVisitedPage === '/auth/signin') {
-        router.push('/');
-      } else {
+      if (lastVisitedPage !== '/auth/signin') {
         router.push(lastVisitedPage);
+      } else {
+        router.push('/');
       }
     } else {
       localStorage.removeItem('user');

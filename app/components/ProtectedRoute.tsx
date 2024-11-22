@@ -13,7 +13,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   }, [user, router]);
 
   if (!user) {
-    return null; // TODO: trocar por um componente de loading
+    return null;
   }
 
   return <>{children}</>;

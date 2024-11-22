@@ -1,5 +1,3 @@
-// app/api/getUsers.js
-
 import { getUsers } from '../../lib/queries';
 
 export default async function handler(req, res) {
