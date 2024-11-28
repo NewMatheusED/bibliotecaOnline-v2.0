@@ -45,8 +45,9 @@ export default function Signin() {
           setFormErrorSignup(errorData.error || 'Failed to register user');
         } else {
           const userData = await response.json();
-          login(userData); // Store user data in context and localStorage
-          router.push('/');
+          login(userData);
+          router.replace('/');
+          return;
         }
       } catch (error) {
         setFormErrorSignup('An unexpected error occurred: ' + error);
@@ -78,7 +79,8 @@ export default function Signin() {
       } else {
         const userData = await response.json();
         login(userData);
-        router.push('/');
+        router.replace('/');
+        return;
       }
     } catch (error) {
       setFormErrorSignin('An unexpected error occurred: ' + error);

@@ -21,15 +21,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const storedUser = localStorage.getItem('user');
     const storedTimestamp = localStorage.getItem('userTimestamp');
     if (storedUser && storedTimestamp) {
-      setUser(JSON.parse(storedUser));
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
     }
-
-
+  
     const fetchUserData = async () => {
       try {
-        if (!user) return;
-        const parsedUser = storedUser ? JSON.parse(storedUser) : null;
-        const response = await fetch(`/api/getUser?id=${parsedUser?.id}`, {
+        const storedUser = localStorage.getItem('user');
+        if (!storedUser) return;
+        const parsedUser = JSON.parse(storedUser);
+        const response = await fetch(`/api/getUser?id=${parsedUser.id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -47,13 +48,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.error('Error fetching user data:', error);
       }
     };
-
+  
     const intervalId = setInterval(() => {
       fetchUserData();
     }, 5000);
-
+  
     return () => clearInterval(intervalId);
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -78,13 +79,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem('userTimestamp', new Date().getTime().toString());
       const lastVisitedPage = localStorage.getItem('lastVisitedPage') || '/';
       if (lastVisitedPage !== '/auth/signin') {
-        router.push(lastVisitedPage);
-      } else {
-        router.push('/');
+        router.replace(lastVisitedPage);
       }
     } else {
       localStorage.removeItem('user');
       localStorage.removeItem('userTimestamp');
+      router.replace('/auth/signin');
     }
   }, [user, router]);
 
