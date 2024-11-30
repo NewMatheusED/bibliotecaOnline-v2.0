@@ -14,4 +14,27 @@ model Users {
   password       String
   role           String
   profilePicture String?   
+  tickets        Ticket[] @relation("UserTickets")
+  messages       Message[] @relation("UserMessages")
+}
+
+model Ticket {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  user        Users     @relation("UserTickets", fields: [userId], references: [id])
+  title       String
+  status      String    @default("open")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  messages    Message[] @relation("TicketMessages")
+}
+
+model Message {
+  id        Int       @id @default(autoincrement())
+  ticketId  Int
+  ticket    Ticket    @relation("TicketMessages", fields: [ticketId], references: [id])
+  senderId  Int
+  sender    Users     @relation("UserMessages", fields: [senderId], references: [id])
+  content   String
+  createdAt DateTime  @default(now())
 }

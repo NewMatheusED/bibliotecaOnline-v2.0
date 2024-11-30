@@ -6,7 +6,7 @@ import SidebarItem from "./SidebarItem";
 import ClickOutside from "@/app/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import logoMain from "@/public/images/biblioteca 2-01.png";
-import { Crown, House, LogOut, LogIn, Bolt } from 'lucide-react';
+import { Crown, House, LogOut, LogIn, Bolt, MessagesSquare } from 'lucide-react';
 import { useAuth } from "@/app/context/authContext";
 
 interface SidebarProps {
@@ -34,6 +34,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           ),
           label: "Settings",
           route: "/userSettings",
+        },
+        {
+          icon: (
+            <MessagesSquare />
+          ),
+          label: "Tickets",
+          route: "/tickets",
         },
       ],
     },
