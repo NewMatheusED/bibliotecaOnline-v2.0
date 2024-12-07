@@ -10,8 +10,8 @@ export default async function handler(req, res) {
                 return;
             }
             res.status(200).json(user);
-        } catch (erro) {
-            res.status(500).json({ error: 'Failed to login user: ' + erro });
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to login user: ' + error.message });
         }
     } else {
         res.setHeader('Allow', ['POST']);

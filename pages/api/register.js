@@ -12,7 +12,7 @@ export default async function handler(req, res) {
             const user = await registerUser(name, email, password);
             res.status(200).json(user);
         } catch (error) {
-            res.status(500).json({ error: 'Failed to register user, erro' + error });
+            res.status(500).json({ error: 'Failed to register user: ' + error.message });
         }
     } else {
         res.setHeader('Allow', ['POST']);
